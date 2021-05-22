@@ -1,20 +1,20 @@
 import React, { useReducer, createContext } from 'react';
 import { globalStateReducer } from '../reducers/globalStateReducer';
 
-export const AuthContext = createContext();
+export const GlobalContext = createContext();
 
 const GlobalStateContext = ({ children }) => {
-    const [authState, dispatch] = useReducer(globalStateReducer, {})
+    const [GlobalState, dispatch] = useReducer(globalStateReducer, {})
 
     return (
-        <AuthContext.Provider
+        <GlobalContext.Provider
           value={{
-            authState,
+            GlobalState,
             dispatch,
           }}
         >
           {children}
-        </AuthContext.Provider>
+        </GlobalContext.Provider>
     );
 }
 

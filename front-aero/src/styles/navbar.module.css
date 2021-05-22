@@ -1,0 +1,22 @@
+.wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: dimgray;
+    padding: 10px;
+}
+.wrapper > div {
+    display: flex;
+}
+.logo{
+    min-width: 254px;
+    margin-right: auto;
+}
+    .logo img{
+        width: 100%;
+    }
+.link{
+    margin: 0px 20px;
+    color:floralwhite;
+    text-decoration: none !important;
+}

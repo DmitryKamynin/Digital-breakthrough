@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import AppRoutes from './routes';
+import AppRoutes from './hooks/routes';
 
 function App() {
+
   return (
     <AppRoutes />
   );
