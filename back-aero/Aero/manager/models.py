@@ -1,5 +1,14 @@
 from django.db import models
 
+STATUS_CHOICES = (
+    ("New", 'Новая'),
+    ("Assigned", 'Назначена'),
+    ("Accepted", 'Принял задачу'),
+    ("In_progress", 'В работе'),
+    ("Check", 'Проверка'),
+    ("Completed", 'Завершена')
+)
+
 
 class Issue(models.Model):
     lat = models.FloatField(verbose_name="Широта")
@@ -10,7 +19,8 @@ class Issue(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name="Время обновления задачи")
     time_finish = models.DateTimeField(auto_now=True, verbose_name="Время закрытия задачи")
     person = models.CharField(max_length=100, verbose_name="Персонаж")  # Персонаж(Работник)
-    status = models.CharField(max_length=100, verbose_name="Статус исполнения задачи")
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES, verbose_name="Статус исполнения задачи",
+                              default="Новая")
 
     class Meta:
         verbose_name = "Задача"
@@ -48,6 +58,7 @@ class Person(models.Model):
 
 class Post(models.Model):
     name = models.CharField(max_length=100, verbose_name="Название должности")
+    description = models.CharField(max_length=255, verbose_name="Описание", blank=True )
 
     class Meta:
         verbose_name = "Должность"
@@ -71,6 +82,7 @@ class Shifts(models.Model):
 
 class Problem(models.Model):
     name = models.CharField(max_length=255, verbose_name="Проблема")
+    description = models.CharField(max_length=255, verbose_name="Описание", blank=True)
 
     class Meta:
         verbose_name = "Проблема"

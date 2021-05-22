@@ -1,5 +1,6 @@
-import React, { useEffect ,useState, useMemo} from 'react';
+import React, { useEffect, useContext ,useState, useMemo} from 'react';
 import { Map, Placemark } from 'react-yandex-maps';
+import {GlobalContext} from '../state/context/globalStateContext';
 
 import NavBar from '../components/NavBar';
 
@@ -13,69 +14,79 @@ const createProblem = (coord, name, id) => ({
     id,
 })
 
-const createTransport = (coord, name, status, target) => ({
+const createTransport = (id, coord, name, status, target, type) => ({
+    id,
     coord,
     name,
     status,
     target,
+    type,
 })
 
-const Problems = [
-    createProblem([55.9769,37.4238], 'Снег', 2),
-    createProblem([55.9733,37.4053], 'Обледенение', 1),
-]
-
 const Transports = [
-    createTransport([55.9830,37.3601], 'Плужно-щеточная машина с реагентом.', 'В работе', 2 ),
-    createTransport([55.9801,37.4368], 'Экскаватор', 'В работе', 1)
+    createTransport(1, [55.9830,37.3601], 'Плужно-щеточная машина с реагентом.', 'В работе', 18, 1 ),
+    createTransport(2, [55.9801,37.4368], 'Экскаватор', 'В работе', 19, 3),
+    createTransport(3, [55.9861,37.4318], 'Самосвал', 'В работе', 20, 2),
+    createTransport(4, [55.9891,37.4468], 'Роторный погрузчик', 'Свободен', null, 4),
+    createTransport(5, [55.9851,37.4468], 'Плужно-щеточная машина', 'Свободен', null, 5),
 ]
 
 
 export default function Main() {
-    const [zoom, setZoom] = useState(13);
+    const { GlobalState } = useContext(GlobalContext);
+    const issues = [...GlobalState.issues];
 
     const mapState = useMemo(() => ({
         center: [ 55.973304 ,37.417588],
         type: 'yandex#satellite',
-        zoom,
+        zoom: 13,
         controls: ['zoomControl', 'fullscreenControl'],
-        behaviors:['scrollZoom']
-    }), [zoom]);
+        behaviors:['default']
+    }), []);
 
     const [transports, setTransports] = useState(Transports);
-    const [problems, setProblems] = useState(Problems);
 
     const [delay, setDelay] = useState(10000);
 
-    const [currPoint, setPoint] = useState([0,0]);
-
-    const points = [
-        [[55.9830,37.3601],[55.9814,37.3608], [55.9798,37.3617], [55.9783,37.3625], [55.9771,37.3631], [55.9756,37.3636], [55.9744,37.3652], [55.9739,37.3672], [55.9730,37.3705], [55.9724,37.3731], [55.9716,37.3761], [55.9709,37.3782], [55.9707,37.3813], [55.9712,37.3841], [55.9715,37.3871], [55.9725,37.3934], [55.9729,37.3962] ,[55.9735,37.3998], [55.9733,37.4053] ], 
-        [[55.9801,37.4368],[55.9801,37.4370], [55.9798,37.4346], [55.9796,37.4320], [55.9793,37.4300], [55.9790,37.4281], [55.9783,37.4274], [55.9775,37.4278], [55.9773,37.4258], [55.9769,37.4238]], 
-    ];
-
+    const setRoute = () => {
+        const route = [...transports].map(item => {
+                        const carTarget = issues.find(iss => iss.id === item.target);
+                        if(carTarget){
+                            if(item.coord[0] > carTarget.lat) item.coord[0] -= 0.000099;
+                            if(item.coord[1] > carTarget.long) item.coord[1] -= 0.000099;
+                            if(item.coord[0] < carTarget.lat) item.coord[0] += 0.000099;
+                            if(item.coord[1] < carTarget.lat) item.coord[1] += 0.000099;
+                        }
+                        return item;
+        })
+        setTransports(route);
+    }
+    // setRoute()
+    useEffect(() => {
+        return () => setDelay(null)
+    }, [])
+    console.log(transports);
     useInterval(() => {
-        setTransports( prevstate => {
-            let prev = [...prevstate];
-            const p0 = points[0];
-            const p1 = points[1];
-            const index1 = currPoint[0];
-            const index2 = currPoint[1];
- 
-            prev[0].coord = p0[index1];
-
-            prev[1].coord = p1[index2];
-            return prev;
-        });
-        setPoint( prevstate => {
-            let prev = [...prevstate];
-            if(prev[0] < points[0].length - 1) prev[0] += 1;
-            if(prev[1] < points[1].length - 1) prev[1] += 1;
-            return prev;
-        });
-
+        setRoute();
     }, delay)
 
+    const setIconIssue = (name) => {
+        if(name === 'Погрузка снега, находящегося в местах временного размещения') return '/snow3.svg';
+        if(name === 'Подметание') return '/snow2.svg';
+        return '/snow4.png'
+    }
+    const setIconUnits = (type) => {
+        if(type === 1) return '/car1.svg';
+        if(type === 2) return '/car2.svg';
+        if(type === 3) return '/car3.svg';
+        if(type === 4) return '/car4.svg';
+        return '/car5.svg';
+    }
+
+    const getTime = (row) => {
+        const date = new Date(row.time_created);
+        return `${date.getHours()}:${date.getMinutes()}`
+    }
 
     return (
         <div className={styles.wrapper}>
@@ -100,8 +111,8 @@ export default function Main() {
                             }}
                             options={{
                                 iconLayout: 'default#image',
-                                iconImageHref: '/track.png',
-                                iconImageSize: [20, 20],
+                                iconImageHref: setIconUnits(item.type),
+                                iconImageSize: [30, 30],
                             }}
                             modules={
                                 ['geoObject.addon.balloon']
@@ -109,21 +120,26 @@ export default function Main() {
                         /> ) )
                     }
                     {
-                        problems.map( item => ( <Placemark
-                            key={item.coord[0]}
-                            geometry={ item.coord }
-                            properties={{
-                                iconCaption: 'Title',
-                                balloonContentBody:`${item.name}</br>`,
-                            }}
-                            options={{
-                                iconLayout: 'default#image',
-                                iconImageHref: '/problem.png',
-                                iconImageSize: [20, 20],
-                            }}
-                            modules={
-                                ['geoObject.addon.balloon']
-                            }
+                        issues
+                            .filter(item => item !== 'Завершена')
+                            .map( item => ( <Placemark
+                                key={item.lat}
+                                geometry={ [item.lat, item.long] }
+                                properties={{
+                                    iconCaption: 'Title',
+                                    balloonContentBody:`Тип: ${item.issue}</br>
+                                                        Назначена: ${item.person}</br>
+                                                        Создана: ${getTime(item)}</br>
+                                                        Необходимая техника: ${item.unit}</br>`,
+                                }}
+                                options={{
+                                    iconLayout: 'default#image',
+                                    iconImageHref: setIconIssue(item.issue),
+                                    iconImageSize: [20, 20],
+                                }}
+                                modules={
+                                    ['geoObject.addon.balloon']
+                                }
                         /> ) )
                     }
                     

@@ -4,7 +4,7 @@ import sqlite3
 class GetData:
     @staticmethod
     def get_units() -> list:  # Возвращает список доступных юнитов
-        conn = sqlite3.connect('../Aero/db.sqlite3')
+        conn = sqlite3.connect('/home/vladimir/back-aero/Aero/db.sqlite3')
         units = list()
         cur = conn.cursor()
         query = cur.execute("SELECT * FROM manager_unit;")
@@ -16,7 +16,7 @@ class GetData:
 
     @staticmethod
     def get_persons() -> list:  # Возвращает список персонажей
-        conn = sqlite3.connect('../Aero/db.sqlite3')
+        conn = sqlite3.connect('/home/vladimir/back-aero/Aero/db.sqlite3')
         persons = list()
         cur = conn.cursor()
         query = cur.execute("SELECT id_telegram, first_name, last_name FROM manager_person;")
@@ -27,7 +27,7 @@ class GetData:
 
     @staticmethod
     def get_problems() -> list:
-        conn = sqlite3.connect('../Aero/db.sqlite3')
+        conn = sqlite3.connect('/home/vladimir/back-aero/Aero/db.sqlite3')
         cur = conn.cursor()
         problems = list()
         query = cur.execute("SELECT name FROM manager_problem;")
@@ -40,7 +40,7 @@ class GetData:
 class SetData:
     @staticmethod
     def set_issue(lat, long, issue, unit, time_created, person):
-        conn = sqlite3.connect('../Aero/db.sqlite3')
+        conn = sqlite3.connect('/home/vladimir/back-aero/Aero/db.sqlite3')
         cur = conn.cursor()
         print(time_created.strftime("%Y-%m-%d %H:%M:%S"))
         cur.execute(f"""INSERT INTO manager_issue(lat, long, issue, unit, time_created, person, status)

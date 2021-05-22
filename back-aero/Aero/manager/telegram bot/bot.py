@@ -2,6 +2,7 @@ import settings
 import telebot
 from telebot import types
 from datetime import datetime
+
 bot = telebot.TeleBot(settings.token, parse_mode=None)
 print("start")
 from db import *

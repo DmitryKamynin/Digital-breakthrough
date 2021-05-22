@@ -73,7 +73,7 @@ export default function UnitsTable(props) {
   
   const getTime = (row) => {
     const date = new Date(row.time_created);
-    return `${date.getDay()}.${date.getMonth()} ${date.getHours()}:${date.getMinutes()}`
+    return `${date.getHours()}:${date.getMinutes()}`
   }
 
 
