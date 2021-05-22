@@ -111,9 +111,9 @@ export default function UnitsTable(props) {
                         />
                       </TableCell>
                       <TableCell classes={{root:styles.tableCell}} component="th" id={labelId} scope="row" padding="none">
-                        {row.title}
+                        {row.name}
                       </TableCell>
-                      <TableCell align="left" padding="none">{row.status} </TableCell>
+                      <TableCell align="left" padding="none">{row.free ? "Свободен" : "В работе"} </TableCell>
                     </TableRow>
                   );
                 })}

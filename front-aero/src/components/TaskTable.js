@@ -1,29 +1,32 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
+import {GlobalContext} from '../state/context/globalStateContext';
 
-import TableRender from './TableRender';
+import TableRenderIssues from './TableRenderIssues';
 
-
-function createData(id, title, status,) {
-  return { id, title, status, };
-}
-
-const rows = [
-  createData(123, 'Снег',),
-  createData(215, 'Обледенение', ),
-
-];
 
 const headCells = [
   { id: 'id',     label: 'Номер' },
   { id: 'title',  label: 'Проблема' },
+  { id: 'status',  label: 'Статус' },
+  { id: 'person',  label: 'Закреплена' },
+  { id: 'unit',  label: 'Требуемая техника' },
+  { id: 'time',  label: 'Назначена' },
 ];
 
 export default function UnitsTable() {
-  
+  const { GlobalState } = useContext(GlobalContext);
+  const issues = [...GlobalState.issues];
+
+  const [rows, setRows] = useState(issues.map((item, index) => {
+    item.id = index;
+    return item;
+  }))
+
+  console.log(issues)
 
   return (
     <div>
-      <TableRender
+      <TableRenderIssues
         headCells={headCells}
         rows={rows}
         tableTitle={"Проблемы"}

@@ -7,9 +7,7 @@ import TaskTable from '../components/TaskTable';
 import styles from '../styles/index.module.css';
 
 export default function Main() {
-    useEffect(() => {
-        console.log('ok?')
-    }, [])
+ 
 
     return (
         <div className={styles.wrapper}>
