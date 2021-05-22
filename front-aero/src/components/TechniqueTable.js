@@ -25,7 +25,7 @@ const rows = [
 
 const headCells = [
   { id: 'id',     label: 'Номер' },
-  { id: 'title',  label: 'Сотрудник' },
+  { id: 'title',  label: 'Техника' },
   { id: 'status', label: 'Статус' },
 ];
 
