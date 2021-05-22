@@ -9,4 +9,5 @@ export default {
     getMap,
     getUnits,
     getTechnique,
+
 }

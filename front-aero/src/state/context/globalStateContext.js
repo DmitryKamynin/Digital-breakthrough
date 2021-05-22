@@ -10,6 +10,7 @@ const GlobalStateContext = ({ children }) => {
         <GlobalContext.Provider
           value={{
             GlobalState,
+
             dispatch,
           }}
         >
