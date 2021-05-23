@@ -2,13 +2,16 @@ import sqlite3
 import settings
 import psycopg2
 
-
+usr = ""
+passwd = ""
+host = ""
+db = ""
 
 class GetData:
     @staticmethod
     def get_units() -> list:  # Возвращает список доступных юнитов
         units = list()
-        con = psycopg2.connect(host='localhost', user='postgres', password='2932065', dbname='air2')
+        con = psycopg2.connect(host=host, user=usr, password=passwd , dbname=db)
         with con:
             cur = con.cursor()
             cur.execute("SELECT * FROM manager_unit;")
@@ -21,7 +24,7 @@ class GetData:
     @staticmethod
     def get_persons() -> list:  # Возвращает список персонажей
         persons = list()
-        con = psycopg2.connect(host='localhost', user='postgres', password='2932065', dbname='air2')
+        con = psycopg2.connect(host=host, user=usr, password=passwd , dbname=db)
         with con:
             cur = con.cursor()
             cur.execute("SELECT id_telegram, first_name, last_name FROM manager_person;")
@@ -31,7 +34,7 @@ class GetData:
 
     @staticmethod
     def get_problems() -> list:
-        con = psycopg2.connect(host='localhost', user='postgres', password='2932065', dbname='air2')
+        con = psycopg2.connect(host=host, user=usr, password=passwd , dbname=db)
         with con:
             cur = con.cursor()
             problems = list()
@@ -42,7 +45,7 @@ class GetData:
 
     @staticmethod
     def user_exist(id_telegram):
-        con = psycopg2.connect(host='localhost', user='postgres', password='2932065', dbname='air2')
+        con = psycopg2.connect(host=host, user=usr, password=passwd , dbname=db)
         with con:
             cur = con.cursor()
             cur.execute(f"SELECT first_name, last_name FROM manager_person where id_telegram={id_telegram};")
@@ -57,7 +60,7 @@ class GetData:
 class SetData:
     @staticmethod
     def set_issue(lat, long, issue, unit, time_created, time_lead, person):
-        con = psycopg2.connect(host='localhost', user='postgres', password='2932065', dbname='air2')
+        con = psycopg2.connect(host=host, user=usr, password=passwd , dbname=db)
         with con:
             cur = con.cursor()
             print(time_created.strftime("%Y-%m-%d %H:%M:%S"))
@@ -69,7 +72,7 @@ class SetData:
 
     @staticmethod
     def create_user(first_name, last_name, id_telegram):
-        con = psycopg2.connect(host='localhost', user='postgres', password='2932065', dbname='air2')
+        con = psycopg2.connect(host=host, user=usr, password=passwd , dbname=db)
         with con:
             cur = con.cursor()
             cur.execute(f"""INSERT INTO manager_person(first_name, last_name, id_telegram, post)
