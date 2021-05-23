@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 import { YMaps } from 'react-yandex-maps';
 
 import App from './App';
@@ -18,9 +18,9 @@ ReactDOM.render(
               apikey: '963076a9-b9f8-4a7f-b5a4-4fd8d2e08ea8',
             }}
           >
-            <BrowserRouter>
+            <HashRouter>
               <App />
-            </BrowserRouter>
+            </HashRouter>
         </YMaps>
     </GlobalStateContext>
   </React.StrictMode>,

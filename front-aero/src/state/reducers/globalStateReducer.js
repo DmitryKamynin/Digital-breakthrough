@@ -20,8 +20,8 @@ export const globalStateReducer = (currentState, { type, data, unit, person, iss
             return state;}
         case 'CHANGE_PERSON':
             {const state = {...currentState};
-            const ID = state.persons.findIndex(item => person.id === item.id);
-            state.persons[ID] = person;
+            const ID = state.persons.findIndex(item => person?.id === item.id);
+            if(ID != -1) state.persons[ID] = person;
             return state;}
         case 'CREATED_PERSON':
             {const state = {...currentState};
@@ -29,8 +29,8 @@ export const globalStateReducer = (currentState, { type, data, unit, person, iss
             return state;}
         case 'CHANGE_UNITS':
             {const state = {...currentState};
-            const ID = state.units.findIndex(item => unit.id === item.id);
-            state.units[ID] = unit;
+            const ID = state.units.findIndex(item => unit?.id === item.id);
+            if(ID != -1) state.units[ID] = unit;
             return state;}
         case 'CREATED_UNITS':
             {const state = {...currentState};
@@ -38,8 +38,8 @@ export const globalStateReducer = (currentState, { type, data, unit, person, iss
             return state;}
         case 'CHANGE':
             {const state = {...currentState};
-            const ID = state.issues.findIndex(item => issue.id === item.id);
-            state.issues[ID] = issue;
+            const ID = state.issues.findIndex(item => issue?.id === item.id);
+            if(ID != -1) state.issues[ID] = issue;
             return state;}
         case 'CREATED':
             {const state = {...currentState};

@@ -7,12 +7,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x:hidden;
 }
-
-canvas {
-  width: 100%!important;
-  height: 100%!important;
-}
-
 *{
   margin: 0;
 }
