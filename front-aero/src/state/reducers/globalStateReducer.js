@@ -25,7 +25,7 @@ export const globalStateReducer = (currentState, { type, data, unit, person, iss
             return state;}
         case 'CREATED_PERSON':
             {const state = {...currentState};
-            if(persons) state.persons.push(person)
+            if(person) state.persons.push(person)
             return state;}
         case 'CHANGE_UNITS':
             {const state = {...currentState};
@@ -34,7 +34,7 @@ export const globalStateReducer = (currentState, { type, data, unit, person, iss
             return state;}
         case 'CREATED_UNITS':
             {const state = {...currentState};
-            if(units)state.units.push(unit)
+            if(unit)state.units.push(unit)
             return state;}
         case 'CHANGE':
             {const state = {...currentState};
