@@ -48,7 +48,7 @@ export default function UnitsTable() {
 
   const onChangeSubmit = async (values) => {
       values.id = GlobalState.id;
-      const result = await request('http://185.185.69.68:8000/persons/?format=json', 'PUT', values);
+      const result = await request(`http://185.185.69.68:8000/persons/${GlobalState.id}`, 'PUT', values);
       dispatch({ type:"CHANGE_PERSON", person: result.data});
   }
 

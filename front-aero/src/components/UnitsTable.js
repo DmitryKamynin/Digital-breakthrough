@@ -41,8 +41,7 @@ const fields2 = [
   }
 
   const onChangeSubmit = async (values) => {
-      values.id = GlobalState.id;
-      const result = await request('http://185.185.69.68:8000/units/?format=json', 'PUT', values);
+      const result = await request(`http://185.185.69.68:8000/units/${GlobalState.id}`, 'PUT', values);
       dispatch({ type:"CHANGE_UNITS", unit: result.data});
   }
 

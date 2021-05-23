@@ -46,8 +46,7 @@ export default function Main() {
     }
 
     const onChangeSubmit = async (values) => {
-        values.id = GlobalState.id;
-        const result = await request(`http://185.185.69.68:8000/issues/${GlobalState.id}?format=json`, 'PUT', values);
+        const result = await request(`http://185.185.69.68:8000/issues/${GlobalState.id}`, 'PUT', values);
         dispatch({ type:"CHANGE", issue: result.data});
     }
 
