@@ -24,7 +24,7 @@ export default function UnitsTable(props) {
 
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('title');
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState();
 
   const [page, setPage] = useState(0);
 
@@ -44,23 +44,8 @@ export default function UnitsTable(props) {
   };
 
   const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
+    if(name === selected) setSelected();
+    else setSelected(name);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -74,14 +59,14 @@ export default function UnitsTable(props) {
   return (
     <div>
       <Paper>
-        <TableToolbar tableTitle={tableTitle} numSelected={selected.length} />
+        <TableToolbar tableTitle={tableTitle} selected={selected} type='units'/>
         <TableContainer>
           <Table
             size={'small'}
           >
             <CustomTableHead
               headCells={headCells}
-              numSelected={selected.length}
+              // numSelected={selected.length}
               order={order}
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
@@ -92,24 +77,25 @@ export default function UnitsTable(props) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * 10, page * 10 + 10)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
+                  // const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
                   return (
                     <TableRow
                       hover
+                      style={{cursor:'pointer'}}
                       onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
-                      aria-checked={isItemSelected}
+                      aria-checked={selected}
                       tabIndex={-1}
                       key={row.id}
-                      selected={isItemSelected}
+                      selected={row.id === selected}
                     >
-                      <TableCell padding="checkbox">
+                      {/* <TableCell padding="checkbox">
                         <Checkbox
                           checked={isItemSelected}
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell classes={{root:styles.tableCell}} component="th" id={labelId} scope="row" padding="none">
                         {row.name}
                       </TableCell>

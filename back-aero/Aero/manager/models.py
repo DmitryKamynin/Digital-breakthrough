@@ -16,7 +16,7 @@ class Issue(models.Model):
     issue = models.CharField(max_length=255, verbose_name="Задача")
     unit = models.CharField(max_length=100, verbose_name="Юнит")  # Юнит(Техника)
     time_created = models.DateTimeField(auto_now=True, verbose_name="Время создания задачи")
-    time_update = models.DateTimeField(auto_now=True, verbose_name="Время обновления задачи")
+    time_lead = models.IntegerField(verbose_name="Время выполнения задачи")
     time_finish = models.DateTimeField(auto_now=True, verbose_name="Время закрытия задачи")
     person = models.CharField(max_length=100, verbose_name="Персонаж")  # Персонаж(Работник)
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, verbose_name="Статус исполнения задачи",
@@ -90,3 +90,5 @@ class Problem(models.Model):
 
     def __str__(self):
         return self.name
+
+

@@ -13,15 +13,15 @@ import './global.css';
 ReactDOM.render(
   <React.StrictMode>
     <GlobalStateContext>
-      <BrowserRouter>
           <YMaps
             query={{
               apikey: '963076a9-b9f8-4a7f-b5a4-4fd8d2e08ea8',
             }}
           >
-            <App />
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
         </YMaps>
-      </BrowserRouter>
     </GlobalStateContext>
   </React.StrictMode>,
   document.getElementById('root')

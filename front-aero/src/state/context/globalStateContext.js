@@ -16,10 +16,10 @@ const GlobalStateContext = ({ children }) => {
         request('http://185.185.69.68:8000/units/?format=json'),
         request('http://185.185.69.68:8000/persons/?format=json'),
       ])
-      .then( values => dispatch( { type: GET_SUCCES, data:values  } ) )
-      .catch( err => dispatch( { type: ERROR } ))
+      .then( values => { 
+        if(values[0].error) dispatch( { type: ERROR } );
+        dispatch( { type: GET_SUCCES, data:values  } )} );
     }, []);
-
 
     return (
         <GlobalContext.Provider

@@ -1,2 +1,8 @@
 export const GET_SUCCES = 'GET_SUCCES';
 export const ERROR = 'ERROR';
+export const OPEN_CHANGE_FORM = 'OPEN_CHANGE_FORM';
+export const CLOSE_CHANGE_FORM = 'CLOSE_CHANGE_FORM';
+export const OPEN_CREATE_FORM = 'OPEN_CREATE_FORM';
+export const CLOSE_CREATE_FORM = 'CLOSE_CREATE_FORM';
+export const OPEN_COMMENTS = 'OPEN_COMMENTS';
+export const CLOSE_COMMENTS = 'CLOSE_COMMENTS';

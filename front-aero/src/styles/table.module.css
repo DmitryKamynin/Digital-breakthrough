@@ -1,3 +1,7 @@
 .tableCell{
     width: 500px;
 }
+
+.infoIcon{
+    padding: 0px !important;
+}

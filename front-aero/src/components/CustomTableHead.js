@@ -15,14 +15,14 @@ export default function CustomTableHead(props) {
         <TableRow
           selected={numSelected === rowCount}
         >
-          <TableCell padding="checkbox">
+          {/* <TableCell padding="checkbox">
             <Checkbox
               indeterminate={numSelected > 0 && numSelected < rowCount}
               checked={rowCount > 0 && numSelected === rowCount}
               onChange={onSelectAllClick}
               inputProps={{ 'aria-label': 'select all' }}
             />
-          </TableCell>
+          </TableCell> */}
           {headCells.filter((item, i) => i).map((headCell) => (
             <TableCell
               key={headCell.id}

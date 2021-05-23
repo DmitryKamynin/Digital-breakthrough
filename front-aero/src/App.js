@@ -6,14 +6,15 @@ import {GlobalContext} from './state/context/globalStateContext';
 
 function App() {
   const { GlobalState } = useContext(GlobalContext);
+
   return (
     <>
-      {GlobalState.ready ?
+      {GlobalState.ready && GlobalState.issues ?
           <AppRoutes /> 
           : 
-          <Backdrop>
-            <CircularProgress color="inherit" />
-          </Backdrop>
+          <Backdrop style={{color: '#fff', zIndex: '9999'}} open>
+            <CircularProgress color="primary" />
+          </Backdrop> 
        }
     </>
   );

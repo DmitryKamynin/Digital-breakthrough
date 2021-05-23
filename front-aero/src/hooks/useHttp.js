@@ -14,19 +14,12 @@ export const useHttp = () => {
         }
         const response = await fetch(url, { method, body, headers, credentials });
         const { status, ok } = response;
-        let data;
-
-        if(ok){
-          data = await response.json();
-        }
-        else {
-          data = await response.text()
-        };
+        const data = await response.json();
         
         setLoading(false);
         return { data, status, ok };
       } catch (error) {
-        console.error(error)
+        console.error(error, 'ПОЛЬЗОВАТЕЛЬСКАЯ ОШИБКА')
         setLoading(false);
         setError(error.message);
         return { error };

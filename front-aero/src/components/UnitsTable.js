@@ -1,28 +1,17 @@
-import React, {useState, useContext} from 'react'
+import { Button, Dialog, DialogTitle } from '@material-ui/core';
+import React, { useContext,useState} from 'react';
+import { Map } from 'react-yandex-maps';
 
-import TableRenderUnits from './TableRenderUnits';
+import NavBar from '../components/NavBar';
+import TableRenderUnits from '../components/TableRenderUnits';
+import CreateObj from '../components/CreateObj';
+import { CLOSE_CREATE_FORM, CLOSE_CHANGE_FORM } from '../constants';
 
 import {GlobalContext} from '../state/context/globalStateContext';
 
-function createData(id, title, status,) {
-  return { id, title, status, };
-}
+import {useHttp} from '../hooks/useHttp';
 
-const rows = [
-  createData(123, 'Грузовик', 'Занят'),
-  createData(215, 'Самосвал', 'Занят'),
-  createData(514, 'Экскаватор', 'Свободен'),
-  createData(915, 'Роторный погрузчик', 'Занят'),
-  createData(643, 'Плужно-щеточная машина', "Занят"),
-  createData(712, 'Плужно-щеточная машина с реагентом.', 'Свободен'),
-  createData(214, 'Экскаватор', 'Свободен'),
-  createData(251, 'Грузовик', 'Занят'),
-  createData(673, 'Плужно-щеточная машина', 'Свободен'),
-  createData(361, 'Экскаватор', 'Свободен'),
-  createData(368, 'Роторный погрузчик', 'Свободен'),
-  createData(125, 'Плужно-щеточная машина', 'Занят'),
-  createData(746, 'Самосвал', 'Свободен'),
-];
+import styles from '../styles/index.module.css';
 
 const headCells = [
   { id: 'id',     label: 'Номер' },
@@ -31,22 +20,59 @@ const headCells = [
 ];
 
 export default function TechniqueTable() {
-  const { GlobalState } = useContext(GlobalContext);
+  const { request } = useHttp();
+
+  const { GlobalState, dispatch  } = useContext(GlobalContext);
   const units = [...GlobalState.units];
 
-  const [rows, setRows] = useState(units.map((item, index) => {
-    item.id = index;
-    return item;
-  }))
+  const fields = [
+    {label:'name' , name:'Название:'},
+]
 
-  console.log(GlobalState.units);
+const fields2 = [
+    {label:'name' , name:'Название:'},
+    {label:'free' , name:'Статус (true or false)'},
+]
+
+  const onCreteSubmit = async (values) => {
+      values.free = true;
+      const result = await request('http://185.185.69.68:8000/units/?format=json', 'POST', values);
+      dispatch({ type:"CREATED_UNITS", unit: result.data});
+  }
+
+  const onChangeSubmit = async (values) => {
+      values.id = GlobalState.id;
+      const result = await request('http://185.185.69.68:8000/units/?format=json', 'PUT', values);
+      dispatch({ type:"CHANGE_UNITS", unit: result.data});
+  }
+
   return (
     <div>
       <TableRenderUnits
         headCells={headCells}
-        rows={rows}
+        rows={units}
         tableTitle={"Техника"}
         />
+
+            <Dialog
+                open={GlobalState.create_form}
+                onClose={() => dispatch( { type: CLOSE_CREATE_FORM } )}
+            >   
+            <DialogTitle>
+                Новая единица
+            </DialogTitle>
+                <CreateObj fields={fields} submit={onCreteSubmit}/>
+            </Dialog>
+
+            <Dialog
+                open={GlobalState.change_form}
+                onClose={() => dispatch( { type: CLOSE_CHANGE_FORM } )}
+            >   
+            <DialogTitle>
+                Редактировать технику
+            </DialogTitle>
+                <CreateObj fields={fields2} submit={onChangeSubmit}/>
+            </Dialog>
     </div>
   )
 }
